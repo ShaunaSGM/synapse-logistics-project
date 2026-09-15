@@ -1,0 +1,45 @@
+{
+	"name": "Salessink",
+	"properties": {
+		"annotations": [],
+		"type": "SqlPoolTable",
+		"schema": [
+			{
+				"name": "SaleID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CustomerID",
+				"type": "nvarchar"
+			},
+			{
+				"name": "OrderDate",
+				"type": "date"
+			},
+			{
+				"name": "ProductCode",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Quantity",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "UnitPrice",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "Stg_Sales"
+		},
+		"sqlPool": {
+			"referenceName": "sqlpoollogistics",
+			"type": "SqlPoolReference"
+		}
+	},
+	"type": "Microsoft.Synapse/workspaces/datasets"
+}

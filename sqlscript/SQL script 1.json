@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 1",
+	"properties": {
+		"content": {
+			"query": "CREATE TABLE Stg_Customers (\n    CustomerID NVARCHAR(50),\n    CustomerName NVARCHAR(100),\n    Region NVARCHAR(50),\n    Segment NVARCHAR(50)\n);\n\nCREATE TABLE Stg_Sales (\n    SaleID NVARCHAR(50),\n    CustomerID NVARCHAR(50),\n    OrderDate DATE,\n    ProductCode NVARCHAR(50),\n    Quantity INT,\n    UnitPrice DECIMAL(18,2)\n);",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "sqlpoollogistics",
+				"poolName": "sqlpoollogistics"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 3",
+	"properties": {
+		"content": {
+			"query": "SELECT COUNT(*) AS Stg_Customers_Count FROM Stg_Customers;\nSELECT COUNT(*) AS Stg_Sales_Count FROM Stg_Sales;\nSELECT COUNT(*) AS DimCustomer_Count FROM DimCustomer;\nSELECT COUNT(*) AS DimProduct_Count FROM DimProduct;\nSELECT COUNT(*) AS DimDate_Count FROM DimDate;\nSELECT COUNT(*) AS FactSales_Count FROM FactSales;\n\nSELECT TOP 10\n    f.SaleID,\n    d.FullDate,\n    c.CustomerName,\n    c.Region,\n    p.ProductCode,\n    f.Quantity,\n    f.UnitPrice,\n    f.TotalPrice\nFROM FactSales f\nJOIN DimCustomer c ON f.CustomerKey = c.CustomerKey\nJOIN DimProduct p ON f.ProductKey = p.ProductKey\nJOIN DimDate d ON f.DateKey = d.DateKey;",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "sqlpoollogistics",
+				"poolName": "sqlpoollogistics"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

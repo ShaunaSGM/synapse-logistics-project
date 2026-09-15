@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 4",
+	"properties": {
+		"content": {
+			"query": "-- Create schema for security objects first\nCREATE SCHEMA Security;\nGO\n\n-- Create the security predicate function\nCREATE FUNCTION Security.fn_security_predicate(@Region NVARCHAR(50))\nRETURNS TABLE\nWITH SCHEMABINDING\nAS\nRETURN (\n    SELECT 1 AS fn_security_result\n    WHERE @Region = USER_NAME() OR USER_NAME() = 'dbo' \n);\nGO\n-- Create the security policy to filter DimCustomer by Region\nCREATE SECURITY POLICY CustomerSecurityPolicy\nADD FILTER PREDICATE Security.fn_security_predicate(Region) \nON dbo.DimCustomer\nWITH (STATE = ON);\nGO",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "sqlpoollogistics",
+				"poolName": "sqlpoollogistics"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}

@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 2",
+	"properties": {
+		"content": {
+			"query": "-- 1. Create Dimension Tables\nCREATE TABLE DimCustomer (\n    CustomerKey INT IDENTITY(1,1) NOT NULL,\n    CustomerID NVARCHAR(50) NOT NULL,\n    CustomerName NVARCHAR(100),\n    Region NVARCHAR(50),\n    Segment NVARCHAR(50)\n);\n\nCREATE TABLE DimProduct (\n    ProductKey INT IDENTITY(1,1) NOT NULL,\n    ProductCode NVARCHAR(50) NOT NULL,\n    ProductName NVARCHAR(100)\n);\n\nCREATE TABLE DimDate (\n    DateKey INT NOT NULL,\n    FullDate DATE NOT NULL,\n    Year INT,\n    Month INT,\n    Day INT\n);\n\n-- 2. Create Fact Table\nCREATE TABLE FactSales (\n    SaleID NVARCHAR(50),\n    CustomerKey INT,\n    ProductKey INT,\n    DateKey INT,\n    Quantity INT,\n    UnitPrice DECIMAL(18,2),\n    TotalPrice DECIMAL(18,2)\n);\n\n-- 3. Load Dimension: DimCustomer\nINSERT INTO DimCustomer (CustomerID, CustomerName, Region, Segment)\nSELECT DISTINCT CustomerID, CustomerName, Region, Segment\nFROM Stg_Customers;\n\n-- 4. Load Dimension: DimProduct\nINSERT INTO DimProduct (ProductCode, ProductName)\nSELECT DISTINCT ProductCode, 'Product ' + ProductCode\nFROM Stg_Sales;\n\n-- 5. Load Dimension: DimDate (Derived from Sales)\nINSERT INTO DimDate (DateKey, FullDate, Year, Month, Day)\nSELECT DISTINCT \n    CAST(FORMAT(OrderDate, 'yyyyMMdd') AS INT),\n    OrderDate,\n    YEAR(OrderDate),\n    MONTH(OrderDate),\n    DAY(OrderDate)\nFROM Stg_Sales;\n\n-- 6. Load Fact Table: FactSales\nINSERT INTO FactSales (SaleID, CustomerKey, ProductKey, DateKey, Quantity, UnitPrice, TotalPrice)\nSELECT \n    s.SaleID,\n    c.CustomerKey,\n    p.ProductKey,\n    CAST(FORMAT(s.OrderDate, 'yyyyMMdd') AS INT),\n    s.Quantity,\n    s.UnitPrice,\n    (s.Quantity * s.UnitPrice)\nFROM Stg_Sales s\nJOIN DimCustomer c ON s.CustomerID = c.CustomerID\nJOIN DimProduct p ON s.ProductCode = p.ProductCode;",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "sqlpoollogistics",
+				"poolName": "sqlpoollogistics"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
